@@ -1,15 +1,15 @@
 version: '3.9'
 services:
-  db:
-    image: postgres:16
-    container_name: lisboa_postgres
-    restart: always
-    environment:
-      POSTGRES_DB: lisboa_registro
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+  lisboa-postgres:
+    image: postgres:17.2
+    restart: unless-stopped
+    container_name: lisboa-postgres
     ports:
-      - '5433:5432'
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=lisboa-registro
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
