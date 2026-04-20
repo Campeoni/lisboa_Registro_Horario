@@ -1,25 +1,99 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+## Getting Started
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+### 1. Prerequisites
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- [Docker](https://www.docker.com/) — for running PostgreSQL
+- [Node.js](https://nodejs.org/) v20+
+- [pnpm](https://pnpm.io/) — `npm install -g pnpm`
+
+---
+
+### 2. Environment variables
+
+Create a `.env` file in `backend/` with the following variables:
+
+```env
+DB_HOST=localhost
+DB_PORT=5433
+DB_USERNAME=postgres
+DB_PASSWORD=postgres
+DB_DATABASE=lisboa-registro
+TYPEORM_SYNCHRONIZE=false
+TYPEORM_LOGGING=false
+PORT=3000
+
+# JWT — change JWT_SECRET in production!
+JWT_SECRET=change-me-in-production-use-a-long-random-string
+JWT_EXPIRES_IN=8h
+```
+
+> The values above match the defaults in `docker-compose.yml`.
+
+---
+
+### 3. Start the database
+
+From the **root** of the monorepo:
+
+```bash
+$ docker-compose up -d
+```
+
+This starts a PostgreSQL 17 container on port `5433`.
+
+---
+
+### 4. Install dependencies
+
+```bash
+$ pnpm install
+```
+
+---
+
+### 5. Run migrations
+
+```bash
+$ pnpm run migration:run
+```
+
+To check the current migration status:
+
+```bash
+$ pnpm run migration:show
+```
+
+---
+
+### 6. Seed initial data (roles & permissions)
+
+```bash
+$ pnpm run seed:roles-permissions
+```
+
+---
+
+### 7. Start the server
+
+```bash
+# development (watch mode)
+$ pnpm run start:dev
+
+# production
+$ pnpm run start:prod
+```
+
+---
+
+## API Documentation (Swagger)
+
+Once the server is running, Swagger UI is available at:
+
+```
+http://localhost:3000/api/docs
+```
+
+---
 
 ## Description
 

@@ -26,3 +26,5 @@ Thumbs.db
 *.tgz
 *.sqlite
 *.local
+
+credenciales.txt
