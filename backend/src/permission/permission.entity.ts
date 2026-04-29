@@ -11,20 +11,20 @@ import { RolePermission } from '../role-permission/role-permission.entity';
 @Entity()
 export class Permission {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ unique: true })
-  name: string;
+  name!: string;
 
   @Column({ nullable: true })
   description?: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @OneToMany(() => RolePermission, (rp) => rp.permission)
-  rolePermissions: RolePermission[];
+  rolePermissions!: RolePermission[];
 }

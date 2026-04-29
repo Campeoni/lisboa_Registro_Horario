@@ -12,13 +12,13 @@ import { CheckIn } from '../checkin/checkin.entity';
 @Entity()
 export class Location {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({ unique: true })
-  code: string;
+  code!: string;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column({ nullable: true })
   address?: string;
@@ -30,23 +30,23 @@ export class Location {
   longitude?: number;
 
   @Column('int', { default: 50 })
-  geofenceRadiusMeters: number;
+  geofenceRadiusMeters!: number;
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @Column({ nullable: true, type: 'jsonb' })
   meta?: any;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 
   @OneToMany(() => LocationUser, (lu: LocationUser) => lu.location)
-  locationUsers: LocationUser[];
+  locationUsers!: LocationUser[];
 
   @OneToMany(() => CheckIn, (ci: CheckIn) => ci.location)
-  checkIns: CheckIn[];
+  checkIns!: CheckIn[];
 }

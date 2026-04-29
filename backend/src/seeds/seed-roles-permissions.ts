@@ -98,7 +98,7 @@ async function seed() {
   }
 
   await dataSource.destroy();
-  console.log('Seed de roles y permisos completado.');
+  //console.log('Seed de roles y permisos completado.');
 }
 
 seed().catch((e) => {

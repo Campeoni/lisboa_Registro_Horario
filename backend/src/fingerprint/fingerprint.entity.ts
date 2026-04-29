@@ -14,35 +14,35 @@ export type FingerprintType = 'webauthn' | 'pin' | 'biometric';
 @Entity()
 export class Fingerprint {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column('uuid')
-  userId: string;
+  userId!: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user!: User;
 
   @Column({ type: 'varchar', default: 'webauthn' })
-  type: FingerprintType;
+  type!: FingerprintType;
 
   /** Credencial WebAuthn serializada o hash de PIN */
   @Column({ type: 'text' })
-  credential: string;
+  credential!: string;
 
   /** Identificador público del dispositivo/credencial */
   @Column({ type: 'text', nullable: true })
   credentialId?: string;
 
   @Column({ default: true })
-  isActive: boolean;
+  isActive!: boolean;
 
   @Column({ nullable: true, type: 'jsonb' })
   meta?: Record<string, unknown>;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
 }

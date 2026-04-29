@@ -22,6 +22,8 @@ export class LocationController {
   constructor(private readonly svc: LocationService) {}
 
   @Get()
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
   @ApiOperation({ summary: 'List all locations' })
   @ApiOkResponse({ description: 'List of locations' })
   findAll() {
@@ -29,6 +31,8 @@ export class LocationController {
   }
 
   @Get(':id')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
   @ApiOperation({ summary: 'Get a location by id' })
   @ApiParam({ name: 'id', type: 'string' })
   @ApiOkResponse({ description: 'The found location' })

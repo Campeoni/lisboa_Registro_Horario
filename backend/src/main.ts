@@ -7,6 +7,7 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { LocationModule } from './location/location.module';
 import { CheckInModule } from './checkin/checkin.module';
 import { AuthModule } from './auth/auth.module';
+import { RoleModule } from './role/role.module';
 
 const logger = new Logger('Bootstrap');
 
@@ -25,7 +26,7 @@ async function bootstrap() {
     .build();
   // Limit scanning to known modules to avoid scanner issues in some versions
   const document = SwaggerModule.createDocument(app, config, {
-    include: [AuthModule, LocationModule, CheckInModule],
+    include: [AuthModule, LocationModule, CheckInModule, RoleModule],
   });
   SwaggerModule.setup('api/docs', app, document);
 

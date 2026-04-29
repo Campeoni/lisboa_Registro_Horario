@@ -12,25 +12,25 @@ import { User } from '../user/user.entity';
 @Entity()
 export class LocationUser {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column('uuid')
-  userId: string;
+  userId!: string;
 
   @Column('uuid')
-  locationId: string;
+  locationId!: string;
 
   @ManyToOne(() => User, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
-  user: User;
+  user!: User;
 
   @ManyToOne(() => Location, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'locationId' })
-  location: Location;
+  location!: Location;
 
   @Column({ nullable: true })
   roleInLocation?: string;
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt!: Date;
 }
