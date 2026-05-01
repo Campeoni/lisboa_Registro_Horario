@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -11,6 +11,7 @@ export interface NavItem {
   label: string;
   icon: string;
   route: string;
+  allowedRoles?: string[];
 }
 
 @Component({
@@ -33,11 +34,19 @@ export class ShellComponent {
   private readonly auth = inject(AuthService);
   readonly sidenavOpen = signal(true);
 
-  readonly navItems: NavItem[] = [
+  private readonly allNavItems: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
     { label: 'Fichajes', icon: 'schedule', route: '/check-ins' },
-    { label: 'Locales', icon: 'location_on', route: '/locations' },
+    { label: 'Locales', icon: 'location_on', route: '/locations', allowedRoles: ['ROOT', 'SUPERVISOR'] },
   ];
+
+  readonly navItems = computed(() => {
+    const role = this.auth.role();
+    return this.allNavItems.filter(item => {
+      if (!item.allowedRoles) return true;
+      return item.allowedRoles.includes(role || '');
+    });
+  });
 
   toggleSidenav() {
     this.sidenavOpen.set(!this.sidenavOpen());
