@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
@@ -32,7 +33,8 @@ export interface UpdateLocationDto extends Partial<CreateLocationDto> {}
 
 @Injectable({ providedIn: 'root' })
 export class LocationService {
-  private readonly http = inject(HttpClient);
+  readonly http = inject(HttpClient);
+  readonly router = inject(Router);
   private readonly apiUrl = `${environment.apiUrl}/locations`;
 
   findAll(): Observable<Location[]> {
