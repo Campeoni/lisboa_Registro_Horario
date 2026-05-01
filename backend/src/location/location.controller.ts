@@ -1,4 +1,12 @@
-import { Controller, Get, Param, Post, Body, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  UseGuards,
+  Put,
+} from '@nestjs/common';
 import { LocationService } from './location.service';
 import {
   ApiTags,
@@ -9,6 +17,7 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { CreateLocationDto } from './dto/create-location.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
 import { AssignUserDto } from './dto/assign-user.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -47,6 +56,16 @@ export class LocationController {
   @ApiCreatedResponse({ description: 'Location created' })
   create(@Body() body: CreateLocationDto) {
     return this.svc.create(body);
+  }
+
+  @Put(':id')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Update a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOkResponse({ description: 'Location updated' })
+  update(@Param('id') id: string, @Body() body: UpdateLocationDto) {
+    return this.svc.update(id, body);
   }
 
   @Post(':id/assign')

@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Location } from './location.entity';
 import { LocationUser } from '../location-user/location-user.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
 
 @Injectable()
 export class LocationService {
@@ -34,5 +35,14 @@ export class LocationService {
       roleInLocation,
     });
     return this.locationUserRepo.save(ent);
+  }
+
+  async update(id: string, payload: UpdateLocationDto) {
+    const ent = await this.locationRepo.findOneBy({ id });
+    if (!ent) {
+      throw new NotFoundException(`Location ${id} not found`);
+    }
+    Object.assign(ent, payload);
+    return this.locationRepo.save(ent);
   }
 }
