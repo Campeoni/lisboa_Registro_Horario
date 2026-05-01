@@ -20,6 +20,13 @@ export const routes: Routes = [
             (m) => m.DashboardComponent,
           ),
       },
+      {
+        path: 'locations',
+        loadChildren: () =>
+          import('./features/locations/locations.routes').then(
+            (m) => m.locationRoutes,
+          ),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },

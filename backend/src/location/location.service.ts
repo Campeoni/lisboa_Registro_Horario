@@ -45,4 +45,12 @@ export class LocationService {
     Object.assign(ent, payload);
     return this.locationRepo.save(ent);
   }
+
+  async delete(id: string) {
+    const ent = await this.locationRepo.findOneBy({ id });
+    if (!ent) {
+      throw new NotFoundException(`Location ${id} not found`);
+    }
+    await this.locationRepo.remove(ent);
+  }
 }

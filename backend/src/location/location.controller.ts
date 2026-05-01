@@ -6,6 +6,7 @@ import {
   Body,
   UseGuards,
   Put,
+  Delete,
 } from '@nestjs/common';
 import { LocationService } from './location.service';
 import {
@@ -76,5 +77,15 @@ export class LocationController {
   @ApiCreatedResponse({ description: 'User assigned to location' })
   assign(@Param('id') id: string, @Body() body: AssignUserDto) {
     return this.svc.assignUser(id, body.userId, body.roleInLocation);
+  }
+
+  @Delete(':id')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT')
+  @ApiOperation({ summary: 'Delete a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOkResponse({ description: 'Location deleted' })
+  delete(@Param('id') id: string) {
+    return this.svc.delete(id);
   }
 }
