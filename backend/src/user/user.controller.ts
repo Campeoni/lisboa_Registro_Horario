@@ -8,10 +8,17 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+} from '@nestjs/swagger';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserResponseDto } from './dto/user-response.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UserRole, Roles } from '../auth/decorators';
@@ -38,12 +45,16 @@ export class UserController {
 
   @Post()
   @Roles(RoleKeys.ROOT, RoleKeys.SUPERVISOR)
+  @ApiBody({ type: CreateUserDto })
+  @ApiCreatedResponse({ description: 'Usuario creado', type: UserResponseDto })
   create(@Body() dto: CreateUserDto, @UserRole() role: string) {
     return this.userService.create(dto, role);
   }
 
   @Patch(':id')
   @Roles(RoleKeys.ROOT, RoleKeys.SUPERVISOR)
+  @ApiBody({ type: UpdateUserDto })
+  @ApiOkResponse({ description: 'Usuario actualizado', type: UserResponseDto })
   update(
     @Param('id') id: string,
     @Body() dto: UpdateUserDto,

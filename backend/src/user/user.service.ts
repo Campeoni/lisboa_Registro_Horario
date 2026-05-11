@@ -13,6 +13,7 @@ import { UserResponseDto } from './dto/user-response.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PermissionsService } from '../auth/permissions/permissions.service';
+import { RoleService } from '../role/role.service';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,7 @@ export class UserService {
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
     private readonly permissionsService: PermissionsService,
+    private readonly roleService: RoleService,
   ) {}
 
   findAll(): Promise<UserResponseDto[]> {
@@ -68,7 +70,8 @@ export class UserService {
     if (existing) {
       throw new ConflictException('Email already registered');
     }
-    if (!this.permissionsService.canCreate(creatorRole, dto.roleId)) {
+    const role = await this.roleService.findById(dto.roleId);
+    if (!this.permissionsService.canCreate(creatorRole, role.name)) {
       throw new ForbiddenException(
         'Insufficient permissions to create this role',
       );
@@ -94,7 +97,8 @@ export class UserService {
     if (!userEntity) {
       throw new NotFoundException(`User ${id} not found`);
     }
-    if (!this.permissionsService.canModify(editorRole, userEntity.roleId)) {
+    const role = await this.roleService.findById(userEntity.roleId);
+    if (!this.permissionsService.canModify(editorRole, role.name)) {
       throw new ForbiddenException(
         'Insufficient permissions to modify this user',
       );
@@ -107,16 +111,17 @@ export class UserService {
     });
   }
 
-  async delete(id: string, deleterRole: string): Promise<void> {
+  async delete(id: string, deleterRole: string): Promise<string> {
     const user = await this.userRepo.findOneBy({ id }); // throws NotFound if not found
     if (!user) {
       throw new NotFoundException(`User ${id} not found`);
     }
-    if (!this.permissionsService.canDelete(deleterRole, user.roleId)) {
+    if (!this.permissionsService.canDelete(deleterRole, user.role.name)) {
       throw new ForbiddenException(
         'Insufficient permissions to delete this user',
       );
     }
-    await this.userRepo.remove(user);
+    const deletedUser = await this.userRepo.remove(user);
+    return `User ${deletedUser.id} deleted successfully`;
   }
 }

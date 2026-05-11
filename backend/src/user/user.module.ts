@@ -5,9 +5,10 @@ import { UserService } from './user.service';
 
 import { PermissionsModule } from '../auth/permissions/permissions.module';
 import { UserController } from './user.controller';
+import { RoleModule } from '../role/role.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User]), PermissionsModule],
+  imports: [TypeOrmModule.forFeature([User]), PermissionsModule, RoleModule],
   providers: [UserService],
   controllers: [UserController],
   exports: [UserService],
