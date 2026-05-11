@@ -8,6 +8,8 @@ import { LocationModule } from './location/location.module';
 import { CheckInModule } from './checkin/checkin.module';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
+import { User } from './user/user.entity';
+import { UserModule } from './user/user.module';
 
 const logger = new Logger('Bootstrap');
 
@@ -26,7 +28,13 @@ async function bootstrap() {
     .build();
   // Limit scanning to known modules to avoid scanner issues in some versions
   const document = SwaggerModule.createDocument(app, config, {
-    include: [AuthModule, LocationModule, CheckInModule, RoleModule],
+    include: [
+      AuthModule,
+      LocationModule,
+      CheckInModule,
+      RoleModule,
+      UserModule,
+    ],
   });
   SwaggerModule.setup('api/docs', app, document);
 

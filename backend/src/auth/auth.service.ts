@@ -11,8 +11,16 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async register(email: string, password: string, roleId: string) {
-    const user = await this.userService.create(email, password, roleId);
+  async register(
+    email: string,
+    password: string,
+    roleId: string,
+    creatorRole: string,
+  ) {
+    const user = await this.userService.create(
+      { email, password, roleId },
+      creatorRole,
+    );
     return this.buildTokenResponse(user);
   }
 

@@ -7,9 +7,12 @@ import { JwtStrategy } from './jwt.strategy';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { UserModule } from '../user/user.module';
 
+import { PermissionsModule } from './permissions/permissions.module';
+
 @Module({
   imports: [
     UserModule,
+    PermissionsModule,
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,

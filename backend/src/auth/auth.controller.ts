@@ -19,6 +19,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/roles.decorator';
 import { RoleKeys } from '../role/constant/role-keys.constants';
+import { UserRole } from './decorators';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -27,12 +28,12 @@ export class AuthController {
 
   @Post('register')
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(RoleKeys.ROOT, RoleKeys.SUPERVISOR)
+  @Roles(RoleKeys.ROOT)
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Register a new user' })
   @ApiCreatedResponse({ description: 'User registered, returns access token' })
-  register(@Body() dto: RegisterDto) {
-    return this.authService.register(dto.email, dto.password, dto.roleId);
+  register(@Body() dto: RegisterDto, @UserRole() role: string) {
+    return this.authService.register(dto.email, dto.password, dto.roleId, role);
   }
 
   @Post('login')

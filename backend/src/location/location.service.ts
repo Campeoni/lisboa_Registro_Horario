@@ -37,6 +37,15 @@ export class LocationService {
     return this.locationUserRepo.save(ent);
   }
 
+  async unassignUser(locationId: string, userId: string) {
+    const result = await this.locationUserRepo.delete({ locationId, userId });
+    if (result.affected === 0) {
+      throw new NotFoundException(
+        `User ${userId} is not assigned to location ${locationId}`,
+      );
+    }
+  }
+
   async update(id: string, payload: UpdateLocationDto) {
     const ent = await this.locationRepo.findOneBy({ id });
     if (!ent) {

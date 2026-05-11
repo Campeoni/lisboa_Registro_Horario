@@ -79,6 +79,16 @@ export class LocationController {
     return this.svc.assignUser(id, body.userId, body.roleInLocation);
   }
 
+  @Post(':id/unassign')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Unassign a user from a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiCreatedResponse({ description: 'User unassigned from location' })
+  unassign(@Param('id') id: string, @Body() body: AssignUserDto) {
+    return this.svc.unassignUser(id, body.userId);
+  }
+
   @Delete(':id')
   @UseGuards(RolesGuard)
   @Roles('ROOT')

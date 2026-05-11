@@ -19,6 +19,21 @@
 
   <mat-card-content>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="actions">
+        <button mat-button type="button" routerLink="/locations">
+          {{ isView() ? 'Volver' : 'Cancelar' }}
+        </button>
+        @if (!isView()) {
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            {{ isEdit() ? 'Actualizar' : 'Crear' }}
+          </button>
+        }
+      </div>
       <mat-form-field class="full-width">
         <mat-label>Codigo</mat-label>
         <input
@@ -100,22 +115,6 @@
       >
         Local activo
       </mat-slide-toggle>
-
-      <div class="actions">
-        <button mat-button type="button" routerLink="/locations">
-          {{ isView() ? 'Volver' : 'Cancelar' }}
-        </button>
-        @if (!isView()) {
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="form.invalid"
-          >
-            {{ isEdit() ? 'Actualizar' : 'Crear' }}
-          </button>
-        }
-      </div>
     </form>
 
     @if (isView() && mapUrl()) {
