@@ -8,13 +8,20 @@ import { LocationModule } from './location/location.module';
 import { CheckInModule } from './checkin/checkin.module';
 import { AuthModule } from './auth/auth.module';
 import { RoleModule } from './role/role.module';
-import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
+
+// Injected for global API response contract
+import { ResponseInterceptor } from './common/interceptors/response.interceptor';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 const logger = new Logger('Bootstrap');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Add global API contract interceptor & filter FIRST
+  app.useGlobalInterceptors(new ResponseInterceptor());
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   app.use(express.json());
   app.enableCors();
