@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+echo "Running pre-commit checks..."
+
+cd backend
+
+# Run lint
+pnpm run lint
+if [ $? -ne 0 ]; then
+  echo "Lint failed!"
+  exit 1
+fi
+
+# Run tests
+pnpm run test
+if [ $? -ne 0 ]; then
+  echo "Tests failed!"
+  exit 1
+fi
+
+echo "Pre-commit checks passed!"

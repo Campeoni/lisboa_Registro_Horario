@@ -17,13 +17,13 @@ export class ResponseInterceptor<T>
     next: CallHandler,
   ): Observable<ApiResponse<T> | T> {
     return next.handle().pipe(
-      map((data) => {
+      map((data: unknown) => {
         // If data is already wrapped or null, return as-is
         if (data === null || data === undefined) {
-          return data;
+          return data as T;
         }
         // Wrap successful responses
-        return new ApiResponse(data);
+        return new ApiResponse(data as T);
       }),
     );
   }

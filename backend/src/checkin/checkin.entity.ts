@@ -29,7 +29,7 @@ export class CheckIn {
   location: Location;
 
   @Column({ type: 'varchar', default: 'in' })
-  type: 'in' | 'out' | string;
+  type: 'in' | 'out';
 
   @Column({ nullable: true, type: 'jsonb' })
   meta?: any;

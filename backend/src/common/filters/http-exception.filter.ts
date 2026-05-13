@@ -25,15 +25,18 @@ export class HttpExceptionFilter implements ExceptionFilter {
       // Handle validation errors (array of messages)
       if (
         typeof exceptionResponse === 'object' &&
+        exceptionResponse !== null &&
         'message' in exceptionResponse
       ) {
-        const messages = (exceptionResponse as any).message;
+        const messages = (exceptionResponse as { message: string | string[] })
+          .message;
         message = Array.isArray(messages) ? messages.join(', ') : messages;
       } else {
         message =
           typeof exceptionResponse === 'string'
             ? exceptionResponse
-            : (exceptionResponse as any).message || exception.message;
+            : (exceptionResponse as { message?: string }).message ||
+              exception.message;
       }
 
       // Map status to error code
