@@ -37,3 +37,61 @@ body {
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* ─────────────────────────────────────
+   CSS Custom Properties (Global tokens)
+   ───────────────────────────────────── */
+:root {
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+}
+
+/* ─────────────────────────────────────
+   Utility classes (reusable across components)
+   ───────────────────────────────────── */
+.full-width {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+/* ─────────────────────────────────────
+   Table chip styling (consistent chip size)
+   ───────────────────────────────────── */
+mat-chip {
+  font-size: 0.75rem;
+}
+
+/* ─────────────────────────────────────
+   Card actions bar (top-right actions)
+   ───────────────────────────────────── */
+.card-actions {
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ─────────────────────────────────────
+   Empty state (when no data)
+   ───────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant, rgba(0, 0, 0, 0.38));
+  padding: var(--spacing-xl);
+  font-style: italic;
+}

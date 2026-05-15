@@ -1,0 +1,81 @@
+<mat-card>
+  <mat-card-header>
+    <mat-icon mat-card-avatar>people</mat-icon>
+    <mat-card-title>Personal asignado</mat-card-title>
+    <mat-card-subtitle>Local: {{ locationName() }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="card-actions">
+      <button mat-raised-button color="primary" (click)="showAdd = true; loadAvailable()" *ngIf="!showAdd">
+        <mat-icon>person_add</mat-icon>
+        Agregar Persona
+      </button>
+      <button mat-stroked-button routerLink="/locations">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Locales
+      </button>
+    </div>
+
+    <div *ngIf="showAdd" class="add-form">
+      <mat-form-field appearance="outline" class="add-form__field">
+        <mat-label>Seleccionar persona</mat-label>
+        <mat-select [(ngModel)]="selectedWorkerId">
+          <mat-option *ngFor="let w of availableWorkers()" [value]="w.id">
+            {{ w.email }}
+          </mat-option>
+          <mat-option *ngIf="availableWorkers().length === 0" disabled>
+            No hay workers disponibles
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="add-form__field">
+        <mat-label>Rol en local</mat-label>
+        <input matInput [(ngModel)]="roleInLocation" placeholder="ej: encargado" />
+      </mat-form-field>
+
+      <div class="add-form__actions">
+        <button mat-raised-button color="primary" (click)="assign()" [disabled]="!selectedWorkerId">
+          <mat-icon>check</mat-icon> Asignar
+        </button>
+        <button mat-stroked-button (click)="cancelAdd()">Cancelar</button>
+      </div>
+    </div>
+
+    <table mat-table [dataSource]="assignedUsers()" class="full-width">
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let row">{{ row.user.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="roleInLocation">
+        <th mat-header-cell *matHeaderCellDef>Rol en Local</th>
+        <td mat-cell *matCellDef="let row">{{ row.roleInLocation || '-' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Asignado el</th>
+        <td mat-cell *matCellDef="let row">{{ row.createdAt | date:'short' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="warn" (click)="unassign(row.userId)">
+            <mat-icon>person_remove</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">
+          No hay personal asignado a este local
+        </td>
+      </tr>
+    </table>
+  </mat-card-content>
+</mat-card>

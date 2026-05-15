@@ -16,6 +16,17 @@ export class ResponseInterceptor<T>
     context: ExecutionContext,
     next: CallHandler,
   ): Observable<ApiResponse<T> | T> {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const request = context.switchToHttp().getRequest();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+    const url = request.url as string;
+
+    // Skip wrapper for auth endpoints (login/register return raw tokens)
+    if (url && url.startsWith('/auth/')) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return next.handle();
+    }
+
     return next.handle().pipe(
       map((data: unknown) => {
         // If data is already wrapped or null, return as-is

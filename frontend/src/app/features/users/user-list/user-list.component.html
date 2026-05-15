@@ -1,0 +1,55 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>Usuarios</mat-card-title>
+    <mat-card-subtitle>Gestion de usuarios</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="card-actions">
+      <button mat-raised-button color="primary" routerLink="/users/new">
+        <mat-icon>add</mat-icon>
+        Nuevo Usuario
+      </button>
+    </div>
+
+    <table mat-table [dataSource]="users()" class="full-width">
+      <!-- Note: .full-width is global from styles.scss -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let row">{{ row.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Rol</th>
+        <td mat-cell *matCellDef="let row">{{ row.role.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="isActive">
+        <th mat-header-cell *matHeaderCellDef>Estado</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-chip
+            [color]="row.isActive ? 'accent' : 'warn'"
+            variant="outlined"
+          >
+            {{ row.isActive ? 'Activo' : 'Inactivo' }}
+          </mat-chip>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Acciones</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button [routerLink]="['/users/edit', row.id]" color="primary">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="delete(row.id)" color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

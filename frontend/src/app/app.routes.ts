@@ -27,6 +27,10 @@ export const routes: Routes = [
             (m) => m.locationRoutes,
           ),
       },
+      {
+        path: 'users',
+        loadChildren: () => import('./features/users/users.routes').then(m => m.userRoutes),
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     ],
   },

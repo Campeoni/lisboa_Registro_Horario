@@ -31,6 +31,20 @@ export interface CreateLocationDto {
 
 export interface UpdateLocationDto extends Partial<CreateLocationDto> {}
 
+export interface AssignedUser {
+  id: string;
+  userId: string;
+  locationId: string;
+  roleInLocation?: string;
+  createdAt: string;
+  user: { id: string; email: string };
+}
+
+export interface AvailableWorker {
+  id: string;
+  email: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class LocationService {
   readonly http = inject(HttpClient);
@@ -55,5 +69,18 @@ export class LocationService {
 
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  getAssignedUsers(locationId: string) {
+    return this.http.get<AssignedUser[]>(`${this.apiUrl}/${locationId}/users`);
+  }
+  getAvailableWorkers() {
+    return this.http.get<AvailableWorker[]>(`${this.apiUrl}/available-workers`);
+  }
+  assignUser(locationId: string, userId: string, roleInLocation?: string) {
+    return this.http.post(`${this.apiUrl}/${locationId}/assign`, { userId, roleInLocation });
+  }
+  unassignUser(locationId: string, userId: string) {
+    return this.http.post(`${this.apiUrl}/${locationId}/unassign`, { userId });
   }
 }

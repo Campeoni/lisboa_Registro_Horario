@@ -16,6 +16,10 @@ export const locationRoutes: Routes = [
       ),
   },
   {
+    path: ':id/personnel',
+    loadComponent: () => import('./location-personnel/location-personnel.component').then(m => m.LocationPersonnelComponent),
+  },
+  {
     path: ':id',
     loadComponent: () =>
       import('./location-form/location-form.component').then(

@@ -40,6 +40,15 @@ export class LocationController {
     return this.svc.findAll();
   }
 
+  @Get('available-workers')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Get workers not assigned to any location' })
+  @ApiOkResponse({ description: 'List of available workers' })
+  findAvailableWorkers() {
+    return this.svc.findAvailableWorkers();
+  }
+
   @Get(':id')
   @UseGuards(RolesGuard)
   @Roles('ROOT', 'SUPERVISOR')
@@ -87,6 +96,16 @@ export class LocationController {
   @ApiCreatedResponse({ description: 'User unassigned from location' })
   unassign(@Param('id') id: string, @Body() body: AssignUserDto) {
     return this.svc.unassignUser(id, body.userId);
+  }
+
+  @Get(':id/users')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Get users assigned to a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOkResponse({ description: 'List of assigned users' })
+  findLocationUsers(@Param('id') id: string) {
+    return this.svc.findLocationUsers(id);
   }
 
   @Delete(':id')

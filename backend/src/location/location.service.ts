@@ -5,6 +5,7 @@ import { Location } from './location.entity';
 import { LocationUser } from '../location-user/location-user.entity';
 import { CreateLocationDto } from './dto/create-location.dto';
 import { UpdateLocationDto } from './dto/update-location.dto';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class LocationService {
@@ -13,6 +14,8 @@ export class LocationService {
     private readonly locationRepo: Repository<Location>,
     @InjectRepository(LocationUser)
     private readonly locationUserRepo: Repository<LocationUser>,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
   ) {}
 
   findAll() {
@@ -44,6 +47,25 @@ export class LocationService {
         `User ${userId} is not assigned to location ${locationId}`,
       );
     }
+  }
+
+  async findLocationUsers(locationId: string) {
+    return this.locationUserRepo.find({
+      where: { locationId },
+      relations: ['user', 'user.role'],
+    });
+  }
+
+  async findAvailableWorkers() {
+    const assigned = await this.locationUserRepo.find({ select: ['userId'] });
+    const assignedIds = assigned.map((lu) => lu.userId);
+
+    const allWorkers = await this.userRepo.find({
+      where: { role: { name: 'WORKER' }, isActive: true },
+      relations: ['role'],
+    });
+
+    return allWorkers.filter((w) => !assignedIds.includes(w.id));
   }
 
   async update(id: string, payload: UpdateLocationDto) {
