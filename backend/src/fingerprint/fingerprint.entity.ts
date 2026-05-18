@@ -40,9 +40,9 @@ export class Fingerprint {
   @Column({ nullable: true, type: 'jsonb' })
   meta?: Record<string, unknown>;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt!: Date;
 }

@@ -32,7 +32,11 @@ export const routes: Routes = [
         loadChildren: () => import('./features/users/users.routes').then(m => m.userRoutes),
       },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-    ],
+       {
+         path: 'checkin',
+         loadComponent: () => import('./features/checkin/checkin.component').then(m => m.CheckInComponent),
+       },
+     ],
   },
   { path: '**', redirectTo: 'auth/login' },
 ];

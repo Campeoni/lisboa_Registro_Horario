@@ -36,7 +36,7 @@ export class ShellComponent {
 
   private readonly allNavItems: NavItem[] = [
     { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
-    { label: 'Fichajes', icon: 'schedule', route: '/check-ins' },
+    { label: 'Fichajes', icon: 'schedule', route: '/checkin' },
     { label: 'Locales', icon: 'location_on', route: '/locations', allowedRoles: ['ROOT', 'SUPERVISOR'] },
     { label: 'Usuarios', icon: 'people', route: '/users', allowedRoles: ['ROOT', 'SUPERVISOR'] },
   ];

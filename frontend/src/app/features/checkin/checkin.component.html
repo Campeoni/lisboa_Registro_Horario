@@ -1,0 +1,56 @@
+<div class="checkin-container">
+  <mat-card class="checkin-card">
+    <mat-card-header>
+      <mat-card-title>Control de Asistencia</mat-card-title>
+      <mat-card-subtitle>Marcá tu entrada o salida</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="checkin-content">
+      @switch (status()) {
+        @case ('idle') {
+          <div class="checkin-idle">
+            <button
+              mat-fab
+              extended
+              color="primary"
+              class="checkin-btn"
+              (click)="checkIn()"
+            >
+              <mat-icon>location_on</mat-icon>
+              MARCAR ENTRADA
+            </button>
+          </div>
+        }
+
+        @case ('loading') {
+          <div class="checkin-loading">
+            <mat-spinner diameter="60"></mat-spinner>
+            <p>Obteniendo ubicación...</p>
+          </div>
+        }
+
+        @case ('success') {
+          <div class="checkin-success">
+            <mat-icon class="checkin-icon success-icon">check_circle</mat-icon>
+            <h2>¡{{ checkinAction() }} registrada!</h2>
+            <p>{{ successMessage }}</p>
+            <button mat-stroked-button color="primary" (click)="reset()">
+              Volver
+            </button>
+          </div>
+        }
+
+        @case ('error') {
+          <div class="checkin-error">
+            <mat-icon class="checkin-icon error-icon">error</mat-icon>
+            <h2>Error</h2>
+            <p>{{ errorMessage }}</p>
+            <button mat-raised-button color="primary" (click)="reset()">
+              Reintentar
+            </button>
+          </div>
+        }
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

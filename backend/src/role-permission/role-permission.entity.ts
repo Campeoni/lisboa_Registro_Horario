@@ -28,6 +28,6 @@ export class RolePermission {
   @JoinColumn({ name: 'permissionId' })
   permission!: Permission;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
 }

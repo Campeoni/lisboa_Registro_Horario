@@ -31,6 +31,6 @@ export class LocationUser {
   @Column({ nullable: true })
   roleInLocation?: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
 }

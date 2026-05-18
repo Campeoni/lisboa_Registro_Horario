@@ -38,10 +38,10 @@ export class Location {
   @Column({ nullable: true, type: 'jsonb' })
   meta?: any;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt!: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' })
   updatedAt!: Date;
 
   @OneToMany(() => LocationUser, (lu: LocationUser) => lu.location)

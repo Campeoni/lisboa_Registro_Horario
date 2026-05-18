@@ -1,0 +1,65 @@
+.checkin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  padding: 24px;
+}
+
+.checkin-card {
+  max-width: 480px;
+  width: 100%;
+}
+
+.checkin-content {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.checkin-idle {
+  padding: 40px 0;
+}
+
+.checkin-btn {
+  width: 100%;
+  height: 80px;
+  font-size: 20px;
+
+  mat-icon {
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+  }
+}
+
+.checkin-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 0;
+}
+
+.checkin-icon {
+  font-size: 64px;
+  height: 64px;
+  width: 64px;
+  margin-bottom: 16px;
+}
+
+.success-icon {
+  color: #4caf50;
+}
+
+.error-icon {
+  color: #f44336;
+}
+
+.checkin-success,
+.checkin-error {
+  padding: 40px 0;
+
+  h2 {
+    margin: 0 0 8px;
+  }
+}
