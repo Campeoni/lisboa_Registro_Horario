@@ -4,6 +4,11 @@ import * as bcrypt from 'bcrypt';
 import { UserService } from '../user/user.service';
 import { JwtPayload } from './jwt.strategy';
 
+export interface TokenResponse {
+  access_token: string;
+  token_type: string;
+}
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -29,10 +34,31 @@ export class AuthService {
     if (!user || !user.isActive) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    const valid = await bcrypt.compare(password, user.password);
+    const valid = await bcrypt.compare(password, user.password ?? '');
     if (!valid) {
       throw new UnauthorizedException('Invalid credentials');
     }
+    return this.buildTokenResponse(user);
+  }
+
+  async googleLogin(email: string, googleId: string): Promise<TokenResponse> {
+    const user = await this.userService.findByEmail(email);
+
+    if (!user || !user.isActive) {
+      throw new UnauthorizedException(
+        'No user found with this email. Contact your administrator.',
+      );
+    }
+
+    // Link googleId on first Google login
+    if (!user.googleId) {
+      await this.userService.linkGoogleId(user.id, googleId);
+    } else if (user.googleId !== googleId) {
+      throw new UnauthorizedException(
+        'This Google account is not linked to this user.',
+      );
+    }
+
     return this.buildTokenResponse(user);
   }
 
@@ -49,6 +75,7 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
       token_type: 'Bearer',
+      success: true,
     };
   }
 }

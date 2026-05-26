@@ -59,7 +59,20 @@ export class UserService {
   }
 
   findByEmail(email: string): Promise<User | null> {
-    return this.userRepo.findOneBy({ email });
+    return this.userRepo.findOne({
+      where: { email },
+      relations: ['role'],
+    });
+  }
+
+  async linkGoogleId(userId: string, googleId: string): Promise<void> {
+    const user = await this.userRepo.findOneBy({ id: userId });
+    if (!user) {
+      throw new NotFoundException(`User ${userId} not found`);
+    }
+    user.googleId = googleId;
+    user.provider = 'google';
+    await this.userRepo.save(user);
   }
 
   async create(

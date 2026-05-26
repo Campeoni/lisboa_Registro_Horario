@@ -1,0 +1,68 @@
+{
+  "files": {
+    "src/app/features/auth/login/login.component.ts": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 1
+        },
+        {
+          "start": 3,
+          "end": 3
+        },
+        {
+          "start": 28,
+          "end": 28
+        },
+        {
+          "start": 32,
+          "end": 32
+        },
+        {
+          "start": 38,
+          "end": 44
+        },
+        {
+          "start": 56,
+          "end": 59
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-26T21:51:31.401Z"
+    },
+    "src/app/features/auth/callback/callback.component.ts": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 44
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-25T23:05:07.914Z"
+    },
+    "src/app/features/auth/auth.service.ts": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 76
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-25T23:07:03.924Z"
+    },
+    "src/app/features/auth/auth.routes.ts": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 14
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-25T23:07:04.195Z"
+    }
+  },
+  "turnCycles": 0,
+  "maxCycles": 3,
+  "lastUpdated": "2026-05-26T21:51:31.402Z",
+  "sessionId": "lens-mplsh06s-1da3271f"
+}

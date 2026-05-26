@@ -7,6 +7,8 @@ import {
 } from 'typeorm';
 import { Role } from '../role/role.entity';
 
+export type AuthProvider = 'local' | 'google';
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -15,8 +17,14 @@ export class User {
   @Column({ unique: true })
   email: string;
 
-  @Column()
-  password: string;
+  @Column({ type: 'varchar', nullable: true })
+  password: string | null;
+
+  @Column({ type: 'varchar', nullable: true, unique: true })
+  googleId: string | null;
+
+  @Column({ type: 'varchar', default: 'local' })
+  provider: string;
 
   @Column({ default: true })
   isActive: boolean;

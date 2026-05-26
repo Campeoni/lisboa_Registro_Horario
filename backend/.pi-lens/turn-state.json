@@ -1,0 +1,140 @@
+{
+  "files": {
+    "src/user/user.entity.ts": {
+      "modifiedRanges": [
+        {
+          "start": 10,
+          "end": 11
+        },
+        {
+          "start": 20,
+          "end": 20
+        },
+        {
+          "start": 23,
+          "end": 23
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-26T21:04:39.753Z"
+    },
+    "migrations/1779500000000-AddGoogleAuthToUser.ts": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 36
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-25T23:01:34.997Z"
+    },
+    "src/auth/google.strategy.ts": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 54
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-25T23:01:57.455Z"
+    },
+    "src/auth/auth.service.ts": {
+      "modifiedRanges": [
+        {
+          "start": 7,
+          "end": 11
+        },
+        {
+          "start": 37,
+          "end": 37
+        },
+        {
+          "start": 44,
+          "end": 64
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-25T23:06:13.844Z"
+    },
+    "src/user/user.service.ts": {
+      "modifiedRanges": [
+        {
+          "start": 6,
+          "end": 6
+        },
+        {
+          "start": 63,
+          "end": 66
+        },
+        {
+          "start": 69,
+          "end": 78
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-25T23:02:47.030Z"
+    },
+    "src/auth/auth.module.ts": {
+      "modifiedRanges": [
+        {
+          "start": 7,
+          "end": 7
+        },
+        {
+          "start": 9,
+          "end": 9
+        },
+        {
+          "start": 25,
+          "end": 33
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-26T21:43:29.641Z"
+    },
+    "src/auth/auth.controller.ts": {
+      "modifiedRanges": [
+        {
+          "start": 4,
+          "end": 4
+        },
+        {
+          "start": 9,
+          "end": 10
+        },
+        {
+          "start": 12,
+          "end": 12
+        },
+        {
+          "start": 19,
+          "end": 19
+        },
+        {
+          "start": 22,
+          "end": 25
+        },
+        {
+          "start": 50,
+          "end": 72
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-26T21:51:00.916Z"
+    },
+    "src/auth/guards/google-oauth.guard.ts": {
+      "modifiedRanges": [
+        {
+          "start": 1,
+          "end": 36
+        }
+      ],
+      "importsChanged": true,
+      "lastEdit": "2026-05-26T21:49:21.598Z"
+    }
+  },
+  "turnCycles": 0,
+  "maxCycles": 3,
+  "lastUpdated": "2026-05-26T21:51:00.916Z",
+  "sessionId": "lens-mplsh06s-1da3271f"
+}

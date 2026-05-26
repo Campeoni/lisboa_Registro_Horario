@@ -41,16 +41,20 @@ export class AuthService {
     }
   }
 
+  setToken(token: string) {
+    localStorage.setItem(TOKEN_KEY, token);
+    this.token.set(token);
+    this.loadRoleFromToken();
+  }
+
   login(payload: LoginPayload) {
-    return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/auth/login`, payload)
-      .pipe(
-        tap((res) => {
-          localStorage.setItem(TOKEN_KEY, res.access_token);
-          this.token.set(res.access_token);
-          this.loadRoleFromToken();
-        }),
-      );
+    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, payload).pipe(
+      tap((res) => {
+        localStorage.setItem(TOKEN_KEY, res.access_token);
+        this.token.set(res.access_token);
+        this.loadRoleFromToken();
+      }),
+    );
   }
 
   logout() {

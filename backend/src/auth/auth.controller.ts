@@ -1,11 +1,15 @@
 import {
   Controller,
   Post,
+  Get,
   Body,
   HttpCode,
   HttpStatus,
   UseGuards,
+  Req,
+  Res,
 } from '@nestjs/common';
+import type { Request, Response } from 'express';
 import {
   ApiTags,
   ApiOperation,
@@ -16,6 +20,10 @@ import {
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto } from './dto/auth.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import {
+  GoogleOAuthGuard,
+  GoogleGuardResult,
+} from './guards/google-oauth.guard';
 import { RolesGuard } from './guards/roles.guard';
 import { Roles } from './decorators/roles.decorator';
 import { RoleKeys } from '../role/constant/role-keys.constants';
@@ -42,5 +50,29 @@ export class AuthController {
   @ApiOkResponse({ description: 'Returns access token' })
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto.email, dto.password);
+  }
+
+  @Get('google')
+  @UseGuards(GoogleOAuthGuard)
+  @ApiOperation({ summary: 'Initiate Google OAuth login' })
+  googleAuth() {
+    // Guard redirects to Google
+  }
+
+  @Get('google/callback')
+  @UseGuards(GoogleOAuthGuard)
+  @ApiOperation({ summary: 'Google OAuth callback' })
+  googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
+    const frontendUrl = process.env.FRONTEND_URL ?? 'http://localhost:4200';
+
+    const user = req.user as GoogleGuardResult;
+
+    if (!user.success) {
+      return res.redirect(
+        `${frontendUrl}/auth/login?error=${encodeURIComponent(user.error)}`,
+      );
+    }
+
+    res.redirect(`${frontendUrl}/auth/callback?token=${user.access_token}`);
   }
 }
