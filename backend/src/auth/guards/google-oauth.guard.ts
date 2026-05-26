@@ -16,7 +16,7 @@ export type GoogleGuardResult = GoogleAuthResult | GoogleAuthError;
 
 @Injectable()
 export class GoogleOAuthGuard extends AuthGuard('google') {
-  handleRequest<TUser = any>(err: any, user: TUser): TUser {
+  handleRequest<TUser = any>(err: Error | null, user: TUser): TUser {
     // If authentication failed, return error object instead of throwing
     if (err || !user) {
       return {
