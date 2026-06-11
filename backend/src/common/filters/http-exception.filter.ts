@@ -32,7 +32,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
       ) {
         const resp = exceptionResponse as Record<string, unknown>;
         const messages = resp.message;
-        message = Array.isArray(messages) ? messages.join(', ') : (messages as string);
+        message = Array.isArray(messages)
+          ? messages.join(', ')
+          : (messages as string);
 
         // Pass through extra properties (warning, etc.) as meta
         const extraProps = { ...resp };
