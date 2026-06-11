@@ -4,6 +4,7 @@ import {
   Post,
   Body,
   Param,
+  Query,
   UseGuards,
   Req,
 } from '@nestjs/common';
@@ -21,6 +22,7 @@ import { WorkerCheckInDto } from './dto/worker-checkin.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { UserId } from '../auth/decorators/user-id.decorator';
 import { WorkerCheckInResponseDto } from './dto/worker-checkin-response.dto';
+import { WorkerAttendanceDto } from './dto/attendance.dto';
 import type { Request } from 'express';
 
 @ApiTags('check-ins')
@@ -58,6 +60,20 @@ export class CheckInController {
   @ApiCreatedResponse({ description: 'Check-in registered' })
   create(@Body() dto: CreateCheckInDto) {
     return this.svc.create(dto);
+  }
+
+  @Get('attendance/:userId')
+  @ApiOperation({ summary: 'Get attendance grid for a worker by date range' })
+  @ApiOkResponse({
+    description: 'Attendance grouped by day with in/out times',
+    type: WorkerAttendanceDto,
+  })
+  getAttendance(
+    @Param('userId') userId: string,
+    @Query('from') from: string,
+    @Query('to') to: string,
+  ): Promise<WorkerAttendanceDto> {
+    return this.svc.getAttendance(userId, from, to);
   }
 
   @Post('worker')

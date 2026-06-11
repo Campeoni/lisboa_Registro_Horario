@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, MoreThan } from 'typeorm';
+import { Repository, MoreThan, Between } from 'typeorm';
 import { CheckIn } from './checkin.entity';
 import { CreateCheckInDto } from './dto/create-checkin.dto';
 import { WorkerCheckInDto } from './dto/worker-checkin.dto';
@@ -12,6 +12,11 @@ import { LocationUser } from '../location-user/location-user.entity';
 
 import { TimeZoneHelper } from '../common/helpers/timezone.helper';
 import { WorkerCheckInResponseDto } from './dto/worker-checkin-response.dto';
+import {
+  WorkerAttendanceDto,
+  AttendanceDayDto,
+  EntryDto,
+} from './dto/attendance.dto';
 
 @Injectable()
 export class CheckInService {
@@ -115,6 +120,42 @@ export class CheckInService {
         `Error al registrar el check-in: ${errorMessage}`,
       );
     }
+  }
+
+  async getAttendance(
+    userId: string,
+    from: string,
+    to: string,
+  ): Promise<WorkerAttendanceDto> {
+    const fromDate = this.timeZoneHelper.getStartOfLocalDay(from);
+    const toDate = this.timeZoneHelper.getEndOfLocalDay(to);
+
+    const checkIns = await this.checkInRepo.find({
+      where: { userId, createdAt: Between(fromDate, toDate) },
+      order: { createdAt: 'ASC' },
+      relations: ['user'],
+    });
+
+    // Group by local date
+    const dayMap = new Map<string, EntryDto[]>();
+    for (const ci of checkIns) {
+      const dateKey = this.timeZoneHelper.getLocalDateString(ci.createdAt);
+      if (!dayMap.has(dateKey)) {
+        dayMap.set(dateKey, []);
+      }
+      dayMap.get(dateKey)!.push({
+        time: this.timeZoneHelper.getLocalTimeString(ci.createdAt),
+        type: ci.type,
+      });
+    }
+
+    const days: AttendanceDayDto[] = [];
+    for (const [date, entries] of dayMap) {
+      days.push({ date, entries });
+    }
+
+    const userName = checkIns[0]?.user?.email ?? 'S/N';
+    return { userName, days };
   }
 
   private calculateDistance(
