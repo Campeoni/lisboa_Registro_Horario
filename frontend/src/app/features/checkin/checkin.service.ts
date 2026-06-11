@@ -26,7 +26,7 @@ export class CheckInService {
   private http = inject(HttpClient);
   private baseUrl = `${environment.apiUrl}/check-ins`;
 
-  workerCheckIn(lat: number, lng: number, accuracy: number) {
-    return this.http.post<WorkerCheckInResponse>(`${this.baseUrl}/worker`, { lat, lng, accuracy });
+  workerCheckIn(lat: number, lng: number, accuracy: number, force = false) {
+    return this.http.post<WorkerCheckInResponse>(`${this.baseUrl}/worker`, { lat, lng, accuracy, force });
   }
 }

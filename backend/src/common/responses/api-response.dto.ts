@@ -17,10 +17,11 @@ export class ApiError {
   error: {
     code: string;
     message: string;
+    meta?: Record<string, unknown>;
   };
 
-  constructor(code: string, message: string) {
+  constructor(code: string, message: string, meta?: Record<string, unknown>) {
     this.success = false;
-    this.error = { code, message };
+    this.error = { code, message, ...(meta ? { meta } : {}) };
   }
 }

@@ -1,5 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsNumber, Min, Max } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNumber, IsOptional, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class WorkerCheckInDto {
@@ -23,4 +23,8 @@ export class WorkerCheckInDto {
   @Min(0)
   @Max(10000)
   accuracy!: number;
+
+  @ApiPropertyOptional({ example: true })
+  @IsOptional()
+  force?: boolean;
 }

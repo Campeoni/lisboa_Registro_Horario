@@ -2,6 +2,7 @@ import {
   Injectable,
   ForbiddenException,
   NotFoundException,
+  HttpException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, MoreThan, Between } from 'typeorm';
@@ -84,7 +85,35 @@ export class CheckInService {
       );
     }
 
-    // 4. Determine type based on today's last check-in
+    // 4. Check for recent check-in (within 15 minutes)
+    if (!dto.force) {
+      const fifteenMinAgo = new Date(Date.now() - 15 * 60 * 1000);
+      const recentCheckIn = await this.checkInRepo.findOne({
+        where: { userId, createdAt: MoreThan(fifteenMinAgo) },
+        order: { createdAt: 'DESC' },
+      });
+
+      if (recentCheckIn) {
+        const secondsAgo = Math.round(
+          (Date.now() - recentCheckIn.createdAt.getTime()) / 1000,
+        );
+        const minutesAgo = Math.floor(secondsAgo / 60);
+        const secs = secondsAgo % 60;
+        const timeAgo =
+          minutesAgo > 0 ? `${minutesAgo} min ${secs}s` : `${secs}s`;
+
+        throw new HttpException(
+          {
+            statusCode: 409,
+            message: `Ya registraste un check-in hace ${timeAgo}. ¿Estás seguro de que querés registrarlo de nuevo?`,
+            warning: true,
+          },
+          409,
+        );
+      }
+    }
+
+    // 5. Determine type based on today's last check-in
     const todayStart = this.timeZoneHelper.getStartOfToday();
 
     const lastToday = await this.checkInRepo.findOne({

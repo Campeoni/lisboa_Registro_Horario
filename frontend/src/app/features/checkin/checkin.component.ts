@@ -7,7 +7,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GeolocationService } from './geolocation.service';
 import { CheckInService } from './checkin.service';
 
-export type CheckInStatus = 'idle' | 'loading' | 'success' | 'error';
+export type CheckInStatus = 'idle' | 'loading' | 'success' | 'error' | 'warning';
+
+interface CheckInCoords {
+  lat: number;
+  lng: number;
+  accuracy: number;
+}
 
 @Component({
   selector: 'app-checkin',
@@ -30,32 +36,57 @@ export class CheckInComponent {
   readonly checkinAction = signal('');
   successMessage = '';
   errorMessage = '';
+  warningMessage = '';
+  private pendingCoords: CheckInCoords | null = null;
 
   async checkIn() {
     this.status.set('loading');
     this.errorMessage = '';
     this.successMessage = '';
+    this.warningMessage = '';
 
     try {
       const coords = await this.geolocation.getCurrentPosition();
+      this.pendingCoords = coords;
       this.status.set('loading');
-
-      this.checkInService.workerCheckIn(coords.lat, coords.lng, coords.accuracy).subscribe({
-        next: (res) => {
-          const action = res.type === 'in' ? 'Entrada' : 'Salida';
-          this.checkinAction.set(action);
-          this.successMessage = `a las ${res.localTime}`;
-          this.status.set('success');
-        },
-        error: (err) => {
-          this.errorMessage = err.error?.message || err.message || 'Error al registrar';
-          this.status.set('error');
-        },
-      });
+      this.doCheckIn(false);
     } catch (err: any) {
       this.errorMessage = err.message || 'Error al obtener ubicación';
       this.status.set('error');
     }
+  }
+
+  private doCheckIn(force: boolean) {
+    const c = this.pendingCoords!;
+    this.checkInService.workerCheckIn(c.lat, c.lng, c.accuracy, force).subscribe({
+      next: (res) => {
+        const action = res.type === 'in' ? 'Entrada' : 'Salida';
+        this.checkinAction.set(action);
+        this.successMessage = `a las ${res.localTime}`;
+        this.pendingCoords = null;
+        this.status.set('success');
+      },
+      error: (err) => {
+        if (err.status === 409 && err.error?.error?.meta?.warning) {
+          this.warningMessage = err.error.error.message;
+          this.status.set('warning');
+        } else {
+          this.errorMessage = err.error?.message || err.message || 'Error al registrar';
+          this.pendingCoords = null;
+          this.status.set('error');
+        }
+      },
+    });
+  }
+
+  confirmForce() {
+    this.status.set('loading');
+    this.doCheckIn(true);
+  }
+
+  cancelWarning() {
+    this.pendingCoords = null;
+    this.reset();
   }
 
   reset() {
@@ -63,5 +94,7 @@ export class CheckInComponent {
     this.checkinAction.set('');
     this.successMessage = '';
     this.errorMessage = '';
+    this.warningMessage = '';
+    this.pendingCoords = null;
   }
 }

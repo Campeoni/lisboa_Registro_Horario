@@ -55,6 +55,29 @@
   color: #f44336;
 }
 
+.warning-icon {
+  color: #ff9800;
+}
+
+.checkin-warning {
+  padding: 40px 0;
+
+  h2 {
+    margin: 0 0 8px;
+  }
+
+  p {
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+}
+
+.warning-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
 .checkin-success,
 .checkin-error {
   padding: 40px 0;

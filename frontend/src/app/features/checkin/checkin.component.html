@@ -40,6 +40,22 @@
           </div>
         }
 
+        @case ('warning') {
+          <div class="checkin-warning">
+            <mat-icon class="checkin-icon warning-icon">warning</mat-icon>
+            <h2>Check-in reciente</h2>
+            <p>{{ warningMessage }}</p>
+            <div class="warning-actions">
+              <button mat-raised-button color="primary" (click)="confirmForce()">
+                Sí, registrar
+              </button>
+              <button mat-stroked-button (click)="cancelWarning()">
+                Cancelar
+              </button>
+            </div>
+          </div>
+        }
+
         @case ('error') {
           <div class="checkin-error">
             <mat-icon class="checkin-icon error-icon">error</mat-icon>
