@@ -35,7 +35,7 @@ export class ShellComponent {
   readonly sidenavOpen = signal(true);
 
   private readonly allNavItems: NavItem[] = [
-    { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
+    { label: 'Dashboard', icon: 'dashboard', route: '/dashboard', allowedRoles: ['ROOT', 'SUPERVISOR'] },
     { label: 'Fichajes', icon: 'schedule', route: '/checkin', allowedRoles: ['WORKER'] },
     { label: 'Locales', icon: 'location_on', route: '/locations', allowedRoles: ['ROOT', 'SUPERVISOR'] },
     { label: 'Usuarios', icon: 'people', route: '/users', allowedRoles: ['ROOT', 'SUPERVISOR'] },
