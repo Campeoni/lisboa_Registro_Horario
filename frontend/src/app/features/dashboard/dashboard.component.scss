@@ -1,0 +1,61 @@
+.dashboard-container {
+  padding: 24px;
+  max-width: 1200px;
+}
+
+.filters-card {
+  margin-bottom: 24px;
+}
+
+.filters-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.worker-field {
+  min-width: 280px;
+  flex: 1;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  padding: 48px;
+}
+
+.grid-card {
+  margin-bottom: 24px;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  padding: 0 !important;
+}
+
+.attendance-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.date-cell {
+  text-align: center;
+  min-width: 120px;
+  font-weight: 500;
+}
+
+.header-cell {
+  text-align: center;
+}
+
+.time-cell {
+  text-align: center;
+  min-width: 70px;
+}
+
+.empty-card {
+  text-align: center;
+  color: var(--mat-neutral-60, #666);
+  padding: 48px;
+}

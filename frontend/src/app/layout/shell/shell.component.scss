@@ -1,0 +1,49 @@
+.shell-container {
+  height: 100vh;
+}
+
+.sidenav {
+  width: 240px;
+  background-color: var(--mat-sys-surface-container-low);
+  border-right: 1px solid var(--mat-sys-outline-variant);
+}
+
+.sidenav-header {
+  display: flex;
+  align-items: center;
+  padding: 20px 16px 12px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.app-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--mat-sys-primary);
+  letter-spacing: 0.02em;
+}
+
+.active-link {
+  background-color: var(--mat-sys-secondary-container);
+  color: var(--mat-sys-on-secondary-container);
+  border-radius: 28px;
+
+  mat-icon {
+    color: var(--mat-sys-on-secondary-container);
+  }
+}
+
+.top-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--mat-sys-surface);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}
+
+.toolbar-spacer {
+  flex: 1;
+}
+
+.content {
+  padding: 24px;
+}

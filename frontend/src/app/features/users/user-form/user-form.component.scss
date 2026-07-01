@@ -1,0 +1,16 @@
+.user-form {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+
+  mat-form-field {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+  }
+}

@@ -1,0 +1,133 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title
+      >{{
+        isView() ? 'Ver' : isEdit() ? 'Editar' : 'Nuevo'
+      }}
+      Local</mat-card-title
+    >
+    <mat-card-subtitle>
+      {{
+        isView()
+          ? 'Datos del local (solo lectura)'
+          : isEdit()
+            ? 'Modifica los datos del local'
+            : 'Ingresa los datos del nuevo local'
+      }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="actions">
+        <button mat-button type="button" routerLink="/locations">
+          {{ isView() ? 'Volver' : 'Cancelar' }}
+        </button>
+        @if (!isView()) {
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="form.invalid"
+          >
+            {{ isEdit() ? 'Actualizar' : 'Crear' }}
+          </button>
+        }
+      </div>
+      <mat-form-field class="full-width">
+        <mat-label>Codigo</mat-label>
+        <input
+          matInput
+          formControlName="code"
+          placeholder="LOC-001"
+          [readonly]="isView()"
+        />
+        @if (form.get('code')?.hasError('required')) {
+          <mat-error>El codigo es requerido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Oficina Central"
+          [readonly]="isView()"
+        />
+        @if (form.get('name')?.hasError('required')) {
+          <mat-error>El nombre es requerido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Direccion</mat-label>
+        <input
+          matInput
+          formControlName="address"
+          placeholder=" Rua Augusta 123, Lisboa"
+          [readonly]="isView()"
+        />
+      </mat-form-field>
+
+      <div class="row">
+        <mat-form-field class="half-width">
+          <mat-label>Latitud</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="latitude"
+            step="0.0000001"
+            [readonly]="isView()"
+          />
+        </mat-form-field>
+
+        <mat-form-field class="half-width">
+          <mat-label>Longitud</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="longitude"
+            step="0.0000001"
+            [readonly]="isView()"
+          />
+        </mat-form-field>
+      </div>
+
+      <mat-form-field class="full-width">
+        <mat-label>Radio de Geofence (metros)</mat-label>
+        <mat-select
+          formControlName="geofenceRadiusMeters"
+          [disabled]="isView()"
+        >
+          <mat-option [value]="25">25 metros</mat-option>
+          <mat-option [value]="50">50 metros</mat-option>
+          <mat-option [value]="100">100 metros</mat-option>
+          <mat-option [value]="200">200 metros</mat-option>
+          <mat-option [value]="500">500 metros</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-slide-toggle
+        formControlName="isActive"
+        [disabled]="isView()"
+        color="primary"
+      >
+        Local activo
+      </mat-slide-toggle>
+    </form>
+
+    @if (isView() && mapUrl()) {
+      <div class="map-container">
+        <iframe
+          [src]="mapUrl()"
+          width="100%"
+          height="400"
+          style="border: 0"
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>

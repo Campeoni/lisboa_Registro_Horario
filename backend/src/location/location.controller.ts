@@ -1,0 +1,120 @@
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  UseGuards,
+  Put,
+  Delete,
+} from '@nestjs/common';
+import { LocationService } from './location.service';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiParam,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
+import { CreateLocationDto } from './dto/create-location.dto';
+import { UpdateLocationDto } from './dto/update-location.dto';
+import { AssignUserDto } from './dto/assign-user.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RolesGuard } from '../auth/guards/roles.guard';
+import { Roles } from '../auth/decorators/roles.decorator';
+
+@ApiTags('locations')
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
+@Controller('locations')
+export class LocationController {
+  constructor(private readonly svc: LocationService) {}
+
+  @Get()
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'List all locations' })
+  @ApiOkResponse({ description: 'List of locations' })
+  findAll() {
+    return this.svc.findAll();
+  }
+
+  @Get('available-workers')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Get workers not assigned to any location' })
+  @ApiOkResponse({ description: 'List of available workers' })
+  findAvailableWorkers() {
+    return this.svc.findAvailableWorkers();
+  }
+
+  @Get(':id')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Get a location by id' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOkResponse({ description: 'The found location' })
+  findOne(@Param('id') id: string) {
+    return this.svc.findOne(id);
+  }
+
+  @Post()
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Create a new location' })
+  @ApiCreatedResponse({ description: 'Location created' })
+  create(@Body() body: CreateLocationDto) {
+    return this.svc.create(body);
+  }
+
+  @Put(':id')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Update a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOkResponse({ description: 'Location updated' })
+  update(@Param('id') id: string, @Body() body: UpdateLocationDto) {
+    return this.svc.update(id, body);
+  }
+
+  @Post(':id/assign')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Assign a user to a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiCreatedResponse({ description: 'User assigned to location' })
+  assign(@Param('id') id: string, @Body() body: AssignUserDto) {
+    return this.svc.assignUser(id, body.userId, body.roleInLocation);
+  }
+
+  @Post(':id/unassign')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Unassign a user from a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiCreatedResponse({ description: 'User unassigned from location' })
+  unassign(@Param('id') id: string, @Body() body: AssignUserDto) {
+    return this.svc.unassignUser(id, body.userId);
+  }
+
+  @Get(':id/users')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT', 'SUPERVISOR')
+  @ApiOperation({ summary: 'Get users assigned to a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOkResponse({ description: 'List of assigned users' })
+  findLocationUsers(@Param('id') id: string) {
+    return this.svc.findLocationUsers(id);
+  }
+
+  @Delete(':id')
+  @UseGuards(RolesGuard)
+  @Roles('ROOT')
+  @ApiOperation({ summary: 'Delete a location' })
+  @ApiParam({ name: 'id', type: 'string' })
+  @ApiOkResponse({ description: 'Location deleted' })
+  delete(@Param('id') id: string) {
+    return this.svc.delete(id);
+  }
+}
